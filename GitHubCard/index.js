@@ -1,8 +1,33 @@
+import axios from "axios"
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
+const cards = document.querySelector(".cards")
+
+const profileURL = "https://api.github.com/users/yue-su"
+
+axios
+  .get(profileURL)
+  .then(function (profile) {
+    let card = {
+      name: profile.data.name,
+      avatar_url: profile.data.avatar_url,
+      login: profile.data.login,
+      url: profile.data.url,
+      followers: profile.data.followers,
+      following: profile.data.following,
+      bio: profile.data.bio,
+    }
+
+    cards.appendChild(newCard(card))
+  })
+  .catch(function (error) {
+    console.log(error)
+  })
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +53,79 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell",
+]
+
+function addCard(profileArr) {
+  profileArr.forEach((username) => {
+    axios
+      .get(`https://api.github.com/users/${username}`)
+      .then(function (profile) {
+        let card = {
+          name: profile.data.name,
+          avatar_url: profile.data.avatar_url,
+          login: profile.data.login,
+          url: profile.data.url,
+          followers: profile.data.followers,
+          following: profile.data.following,
+          bio: profile.data.bio,
+        }
+
+        cards.appendChild(newCard(card))
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  })
+}
+
+addCard(followersArray)
+
+function newCard(userObj) {
+  const card = document.createElement("div")
+  const cardImage = document.createElement("img")
+  const cardInfo = document.createElement("div")
+  const name = document.createElement("h3")
+  const userName = document.createElement("p")
+  const location = document.createElement("p")
+  const profile = document.createElement("p")
+  const link = document.createElement("a")
+  const followers = document.createElement("p")
+  const following = document.createElement("p")
+  const bio = document.createElement("p")
+
+  card.className = "card"
+  cardImage.setAttribute("src", `${userObj.avatar_url}`)
+  cardInfo.className = "card-info"
+  name.className = "name"
+  name.textContent = userObj.name
+  userName.className = "username"
+  userName.textContent = userObj.login
+  profile.textContent = "Profile:"
+  link.setAttribute("href", `${userObj.url}`)
+  link.textContent = userObj.url
+  followers.textContent = `Followers: ${userObj.followers}`
+  following.textContent = `Following: ${userObj.following}`
+  bio.textContent = `Bio: ${userObj.bio}`
+
+  card.appendChild(cardImage)
+  card.appendChild(cardInfo)
+  cardInfo.appendChild(name)
+  cardInfo.appendChild(userName)
+  cardInfo.appendChild(location)
+  cardInfo.appendChild(profile)
+  cardInfo.appendChild(followers)
+  cardInfo.appendChild(following)
+  cardInfo.appendChild(bio)
+  profile.appendChild(link)
+
+  return card
+}
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
