@@ -22,7 +22,6 @@ axios
       following: profile.data.following,
       bio: profile.data.bio,
     }
-
     cards.appendChild(newCard(card))
   })
   .catch(function (error) {
@@ -75,7 +74,6 @@ function addCard(profileArr) {
           following: profile.data.following,
           bio: profile.data.bio,
         }
-
         cards.appendChild(newCard(card))
       })
       .catch(function (error) {
@@ -98,9 +96,12 @@ function newCard(userObj) {
   const followers = document.createElement("p")
   const following = document.createElement("p")
   const bio = document.createElement("p")
+  //for stretch -- adding chart at the bottom of the card
+  const chart = document.createElement("img")
 
   card.className = "card"
   cardImage.setAttribute("src", `${userObj.avatar_url}`)
+  cardImage.className = "card-image"
   cardInfo.className = "card-info"
   name.className = "name"
   name.textContent = userObj.name
@@ -112,9 +113,14 @@ function newCard(userObj) {
   followers.textContent = `Followers: ${userObj.followers}`
   following.textContent = `Following: ${userObj.following}`
   bio.textContent = `Bio: ${userObj.bio}`
+  //for stretch
+  chart.setAttribute("src", `http://ghchart.rshah.org/${userObj.login}`)
+  chart.className = "card-chart"
 
   card.appendChild(cardImage)
   card.appendChild(cardInfo)
+  //for stretch
+  card.appendChild(chart)
   cardInfo.appendChild(name)
   cardInfo.appendChild(userName)
   cardInfo.appendChild(location)
@@ -145,13 +151,4 @@ function newCard(userObj) {
         <p>Bio: {users bio}</p>
       </div>
     </div>
-*/
-
-/*
-  List of LS Instructors Github username's:
-    tetondan
-    dustinmyers
-    justsml
-    luishrd
-    bigknell
 */
